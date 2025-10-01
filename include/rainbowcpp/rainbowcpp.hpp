@@ -9,6 +9,17 @@
 
 #include "colors.hpp"
 
+// TODO
+//
+// - Generating the colored strings at compile time - injecting the start and end
+//
+//
+//
+//
+//
+//
+//
+
 namespace rainbow {
   namespace internal {
 
@@ -55,10 +66,12 @@ namespace rainbow {
   template <rainbow::colors::bit4::Foreground Fg,
             rainbow::colors::bit4::Background Bg>
   constexpr auto color() -> std::string_view {
-    static std::string Out = internal::toString(std::to_underlying(Fg)) +
-                             internal::toString(std::to_underlying(Bg));
-    // static auto Out = internal::concatv<fgStr.c_str(), bgStr.c_str()>;
+    static std::string Out = "\033[" +
+                             internal::toString(std::to_underlying(Fg)) + ";" +
+                             internal::toString(std::to_underlying(Bg)) + "m";
     return Out;
   }
+
+  constexpr auto reset() -> std::string_view { return "\033[39;49m"; }
 
 }  // namespace rainbow

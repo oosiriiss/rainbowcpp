@@ -20,6 +20,5 @@ function(add_example NAME)
   add_dependencies(run-examples "run_${NAME}")
 endfunction()
 
-add_example(basic_usage)
-
+add_example(4bit)
 add_folders(Example)
