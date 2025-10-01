@@ -21,4 +21,6 @@ function(add_example NAME)
 endfunction()
 
 add_example(4bit)
+add_example(24bit)
+
 add_folders(Example)

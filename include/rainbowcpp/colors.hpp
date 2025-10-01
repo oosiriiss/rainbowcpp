@@ -4,6 +4,11 @@
 namespace rainbow {
 
   struct Color {
+    constexpr Color(std::uint8_t red, std::uint8_t green, std::uint8_t blue)
+        : r(red),
+          g(green),
+          b(blue) {}
+
     std::uint8_t r;
     std::uint8_t g;
     std::uint8_t b;
