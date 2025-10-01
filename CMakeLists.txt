@@ -7,7 +7,7 @@ project(
     VERSION 0.1.0
     DESCRIPTION "C++ Colorful output micro-library"
     HOMEPAGE_URL " "
-    LANGUAGES NONE
+    LANGUAGES CXX
 )
 
 include(cmake/project-is-top-level.cmake)
