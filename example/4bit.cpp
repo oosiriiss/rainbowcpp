@@ -7,7 +7,7 @@ using rainbow::colors::bit4::Background;
 using rainbow::colors::bit4::Foreground;
 
 template <Foreground... Foregrounds>
-static constexpr void printAll() {
+static void printAll() {
   (std::println("{}Some example text{}",
                 rainbow::color<Foregrounds, Background::Black>(),
                 rainbow::reset()),
@@ -15,15 +15,33 @@ static constexpr void printAll() {
 }
 
 template <Background... Backgrounds>
-static constexpr void printAll() {
+static void printAll() {
   (std::println("{}Some example text{}",
                 rainbow::color<Foreground::Black, Backgrounds>(),
                 rainbow::reset()),
    ...);
 }
 
-auto main() -> int {
-  std::println("Possible 4bit foreground colors are:");
+constexpr static auto staticColor =
+    rainbow::color<Foreground::Black, Background::White>();
+
+constexpr static auto staticColor2 =
+    rainbow::color<Foreground::Black, Background::BrightBlue>();
+
+auto main() -> int {  // NOLINT bugprone-exception-escape
+  std::print("Static color code is:");
+  for (char chr : staticColor) {
+    std::print("{} ", static_cast<int>(chr));
+  }
+
+  std::print("\nStatic color 2 code is:");
+  for (char chr : staticColor2) {
+    std::print("{} ", static_cast<int>(chr));
+  }
+  std::println("");
+
+  std::println("{} Possible 4bit {} foreground colors are:{} ", staticColor,
+               staticColor2, rainbow::reset());
   printAll<Foreground::Black, Foreground::Red, Foreground::Green,
            Foreground::Yellow, Foreground::Blue, Foreground::Magenta,
            Foreground::Cyan, Foreground::White, Foreground::Gray,
