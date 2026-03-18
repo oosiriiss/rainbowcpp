@@ -3,10 +3,14 @@
 #include <algorithm>
 #include <array>
 #include <concepts>
+#include <print>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 
 #include "colors.hpp"
+#include "rainbowcpp/static_str.hpp"
+#include "utility.hpp"
 
 // TODO
 // - Generating the colored strings at compile time - injecting the start and
@@ -14,80 +18,40 @@
 //
 
 namespace rainbow {
+
   namespace internal {
 
-    template <std::integral T>
-    constexpr auto countDigits(T value) -> std::uint8_t {
-      std::uint8_t digits = 1;
+    template <typename T>
+    concept Color4Bit = std::same_as<T, colors::bit4::Foreground> ||
+                        std::same_as<T, colors::bit4::Background>;
 
-      constexpr int radix = 10;
-      while (value >= radix) {
-        ++digits;
-        value = value / radix;
-      }
-
-      return digits;
+    template <Color4Bit auto Clr>
+    constexpr auto colorFormat() {
+      constexpr auto clrSv = internal::toString<std::to_underlying(Clr)>();
+      return static_string<clrSv.size()>(clrSv);
     }
 
-    template <std::uint8_t Value>
-    constexpr auto toString() -> std::string_view {
-      constexpr static std::array arr = []() {
-        constexpr auto digits = countDigits(Value);
-
-        std::array<char, digits> str{};
-        constexpr int radix = 10;
-        auto value = Value;
-        for (int i = digits - 1; i >= 0; --i) {
-          auto digit = static_cast<std::uint8_t>((value + radix) % radix);
-          value = value / radix;
-
-          // i is always positive and digit is in range 0-9
-          str.at(static_cast<std::size_t>(i)) = static_cast<char>('0' + digit);
-        }
-        return str;
-      }();
-
-      return std::string_view{arr.begin(), arr.end()};
+    constexpr auto colorFormat(Color color) -> std::string_view {
+      // constexpr auto red = internal::toString<color.r>();
+      //  constexpr auto green = internal::countDigits(color.g);
+      //  constexpr auto blue = internal::countDigits(color.b);
+      //  constexpr static auto str = static_string<fgStr.size()>(fgStr.data());
+      //  return str.view();
+      return "";
     }
+
   }  // namespace internal
 
   template <rainbow::colors::bit4::Foreground Fg,
-            rainbow::colors::bit4::Background Bg>
+            rainbow::colors::bit4::Background Bg =
+                rainbow::colors::bit4::Background::Default>
   constexpr auto color() -> std::string_view {
-    constexpr static std::array arr = []() {
-      constexpr auto fgColorCode = std::to_underlying(Fg);
-      constexpr auto bgColorCode = std::to_underlying(Bg);
+    constexpr static_string fgStr = internal::colorFormat<Fg>();
+    constexpr static_string bgStr = internal::colorFormat<Bg>();
 
-      constexpr auto fgStr = internal::toString<fgColorCode>();
-      constexpr auto bgStr = internal::toString<bgColorCode>();
+    constexpr static static_string result = "\033[" + fgStr + ";" + bgStr + "m";
 
-      static_assert(fgStr.size() == 2,
-                    "Encountered invalid foreground color code");
-
-      static_assert(bgStr.size() == 2 || bgStr.size() == 3,
-                    "Encountered invalid background color code");
-
-      std::array str = []() {
-        if constexpr (internal::countDigits(bgColorCode) == 2) {
-          return std::array{'\x1B', '[', 'X', 'X', ';', 'X', 'X', 'm', '\0'};
-        } else {
-          return std::array{'\x1B', '[', 'X', 'X', ';',
-                            'X',    'X', 'X', 'm', '\0'};
-        }
-      }();
-
-      constexpr auto fgStartIndex = 2;
-      std::ranges::copy(fgStr.begin(), fgStr.end(),
-                        std::next(str.begin(), fgStartIndex));
-
-      constexpr auto bgStartIndex = 5;
-      std::ranges::copy(bgStr.begin(), bgStr.end(),
-                        std::next(str.begin(), bgStartIndex));
-
-      return str;
-    }();
-
-    return std::string_view{arr.begin(), arr.end()};
+    return result.view();
   }
 
   // 24-bit colors

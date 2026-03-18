@@ -59,11 +59,10 @@ auto main() -> int {  // NOLINT bugprone-exception-escape
            Background::BrightMagenta, Background::BrightCyan,
            Background::BrightWhite>();
 
-  // You can color thext like this
+  // You can color text like this
   std::println(
       "The next text will be colored {}Colored textcolor is:{} And this is "
       "not",
       rainbow::color<Foreground::Blue, Background::Red>(), rainbow::reset());
-
   return 0;
 }

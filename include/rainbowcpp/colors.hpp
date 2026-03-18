@@ -26,6 +26,7 @@ namespace rainbow {
       Magenta = 35,
       Cyan = 36,
       White = 37,
+      Default = 39,
       Gray = 90,
       BrightRed = 91,
       BrightGreen = 92,
@@ -45,6 +46,7 @@ namespace rainbow {
       Magenta = 45,
       Cyan = 46,
       White = 47,
+      Default = 49,
       Gray = 100,
       BrightRed = 101,
       BrightGreen = 102,
@@ -55,5 +57,4 @@ namespace rainbow {
       BrightWhite = 107
     };
   }  // namespace colors::bit4
-
 }  // namespace rainbow
