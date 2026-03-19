@@ -19,18 +19,6 @@ struct static_string {
     std::ranges::copy_n(str, Size, data.begin());
   }
 
-  // template <std::size_t OtherSize>
-  // constexpr auto operator+(const char (&other)[OtherSize]) const {
-  //   static_string<Size + OtherSize - 1>
-  //       result;  // Removing double null terminator
-
-  //  std::ranges::copy(data, result.data.begin());
-  //  std::ranges::copy_n(other, OtherSize,
-  //                      std::next(result.data.begin(), data.size() - 1));
-
-  //  return result;
-  //}
-
   constexpr auto view() const noexcept -> std::string_view {
     return std::string_view{data.begin(), data.end()};
   }
@@ -39,6 +27,9 @@ struct static_string {
 
   std::array<char, Size> data;
 };
+
+template <std::size_t Size>
+static_string(const char (&)[Size]) -> static_string<Size>;
 
 template <std::size_t Size, std::size_t OtherSize>
 constexpr auto operator+(const static_string<Size>& first,

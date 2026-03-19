@@ -5,7 +5,7 @@
 
 namespace rainbow::internal {
   template <std::integral T>
-  consteval auto countDigits(T value) -> std::uint8_t {
+  constexpr auto countDigits(T value) -> std::uint8_t {
     uint8_t digits = 1;
 
     constexpr int radix = 10;
