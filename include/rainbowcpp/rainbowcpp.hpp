@@ -24,8 +24,14 @@ namespace rainbow {
     template <typename T>
     concept Color4Bit = std::same_as<T, colors::bit4::Foreground> ||
                         std::same_as<T, colors::bit4::Background>;
+    template <typename T>
+    concept ForegroundColor = std::same_as<T, colors::bit4::Foreground> ||
+                              std::same_as<T, rainbow::Color>;
+    template <typename T>
+    concept BackgroundColor = std::same_as<T, colors::bit4::Background> ||
+                              std::same_as<T, rainbow::Color>;
 
-    template <Color4Bit auto Clr>
+    template <Color4Bit auto Clr, bool IsBackground>
     constexpr auto colorFormat()
         -> static_string<internal::toString<std::to_underlying(Clr)>().size()> {
       constexpr auto clrSv = internal::toString<std::to_underlying(Clr)>();
@@ -51,22 +57,12 @@ namespace rainbow {
     }
   }  // namespace internal
 
-  template <rainbow::colors::bit4::Foreground Fg,
-            rainbow::colors::bit4::Background Bg =
-                rainbow::colors::bit4::Background::Default>
+  template <
+      internal::ForegroundColor auto Fg,
+      internal::BackgroundColor auto Bg = colors::bit4::Background::Default>
   constexpr auto color() -> std::string_view {
-    constexpr static_string fgStr = internal::colorFormat < Fg>();
-    constexpr static_string bgStr = internal::colorFormat < Bg>();
-    constexpr static static_string result = "\033[" + fgStr + ";" + bgStr + "m";
-
-    return result.view();
-  }
-
-  // 24-bit colors
-  template <Color Fg, Color Bg>
-  constexpr auto color() -> std::string_view {
-    constexpr auto fgStr = internal::colorFormat<Fg, false>();
-    constexpr auto bgStr = internal::colorFormat<Bg, true>();
+    constexpr static_string fgStr = internal::colorFormat<Fg, false>();
+    constexpr static_string bgStr = internal::colorFormat<Bg, true>();
     constexpr static static_string result = "\033[" + fgStr + ";" + bgStr + "m";
 
     return result.view();

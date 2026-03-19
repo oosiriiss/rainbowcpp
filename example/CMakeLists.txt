@@ -22,5 +22,4 @@ endfunction()
 
 add_example(4bit)
 add_example(24bit)
-
-add_folders(Example)
+add_example(general)
