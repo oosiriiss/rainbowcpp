@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.14)
 
 project(
     rainbowcpp
-    VERSION 0.1.0
-    DESCRIPTION "C++ Colorful output micro-library"
+    VERSION 0.3.1
+    DESCRIPTION "C++ ANSI color escape codes output library"
     HOMEPAGE_URL " "
     LANGUAGES CXX
 )
@@ -33,7 +33,6 @@ if(NOT CMAKE_SKIP_INSTALL_RULES)
 endif()
 
 # ---- Examples ----
-add_subdirectory(example)
 
 if(PROJECT_IS_TOP_LEVEL)
    option(BUILD_EXAMPLES "Build rainbowcpp examples." ON)
