@@ -1,15 +1,11 @@
 #pragma once
 
-#include <algorithm>
-#include <array>
 #include <concepts>
-#include <print>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 
 #include "colors.hpp"
-#include "rainbowcpp/static_str.hpp"
+#include "static_str.hpp"
 #include "utility.hpp"
 
 // TODO

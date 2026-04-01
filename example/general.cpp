@@ -8,20 +8,19 @@ int main() {
   using Fg4Bit = rainbow::colors::bit4::Foreground;
 
   std::println("{}Colored text with 4bit colors{}",
-               rainbow::color<Fg4Bit::Blue, Bg4Bit::BrightCyan>(),
+               rainbow::color<Fg4Bit::Black, Bg4Bit::BrightYellow>(),
                rainbow::reset());
   std::println("{}Colored text with 24bit colors{}",
-               rainbow::color<rainbow::Color(255, 0, 0),
-                              rainbow::Color(120, 120, 120)>(),
+               rainbow::color<rainbow::Color(100, 220, 255),
+                              rainbow::Color(0, 15, 30)>(),
                rainbow::reset());
-
   std::println(
       "{}Colored text with 4bit foreground and 24bit background colors{}",
-      rainbow::color<Fg4Bit::BrightRed, rainbow::Color(180, 90, 45)>(),
+      rainbow::color<Fg4Bit::BrightWhite, rainbow::Color(76, 114, 137)>(),
       rainbow::reset());
 
   std::println(
-      "{}Colored text with 4bit foreground and 24bit background colors{}",
-      rainbow::color<Fg4Bit::Yellow, rainbow::Color(20, 77, 150)>(),
+      "{}Colored text with 24bit foreground and 4bit background colors{}",
+      rainbow::color<rainbow::Color(255, 180, 150), Bg4Bit::Black>(),
       rainbow::reset());
 }

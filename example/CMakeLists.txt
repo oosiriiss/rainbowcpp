@@ -14,7 +14,6 @@ add_custom_target(run-examples)
 function(add_example NAME)
   add_executable("${NAME}" "${NAME}.cpp")
   target_link_libraries("${NAME}" PRIVATE rainbowcpp::rainbowcpp)
-  target_compile_features("${NAME}" PRIVATE cxx_std_23)
 
    # std::print on windows mingw
    if(WIN32 AND MINGW)
