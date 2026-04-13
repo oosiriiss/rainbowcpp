@@ -57,9 +57,11 @@ namespace rainbow {
       internal::ForegroundColor auto Fg,
       internal::BackgroundColor auto Bg = colors::bit4::Background::Default>
   constexpr auto color() -> std::string_view {
-    constexpr static_string fgStr = internal::colorFormat<Fg, false>();
-    constexpr static_string bgStr = internal::colorFormat<Bg, true>();
-    constexpr static static_string result = "\033[" + fgStr + ";" + bgStr + "m";
+    constexpr internal::static_string fgStr =
+        internal::colorFormat<Fg, false>();
+    constexpr internal::static_string bgStr = internal::colorFormat<Bg, true>();
+    constexpr static internal::static_string result =
+        "\033[" + fgStr + ";" + bgStr + "m";
 
     return result.view();
   }
